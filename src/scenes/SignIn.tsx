@@ -11,61 +11,69 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import CustomButton from '../components/CustomButton';
+import { useNavigation } from '@react-navigation/native';
 
 const SignIn: React.FC = () => {
+  const navigation = useNavigation();
   const [email, setEmail] = useState('Customer');
   const [password, setPassword] = useState('password');
+
+  const navigate = (link: string) => {
+    navigation.navigate(link);
+  };
 
   return (
     <View>
       <SafeAreaView style={styles.safeArea} />
       <LinearGradient colors={['#0F397E', '#0066B2']}>
-        <View style={styles.container}>
-          <View style={styles.form__container}>
-            <View style={styles.form__label}>
-              <Text style={styles.form__title}>Accedi</Text>
-              <Text style={styles.form__description}>
-                Collegati per vedere dove sei
-              </Text>
-            </View>
-            <View style={styles.container__inputs}>
-              <TextInput
-                style={styles.input}
-                onChangeText={setEmail}
-                value={email}
-                placeholder="Username"
+        <SafeAreaView>
+          <View style={styles.container}>
+            <View style={styles.form__container}>
+              <View style={styles.form__label}>
+                <Text style={styles.form__title}>Accedi</Text>
+                <Text style={styles.form__description}>
+                  Collegati per vedere dove sei
+                </Text>
+              </View>
+              <View style={styles.container__inputs}>
+                <TextInput
+                  style={styles.input}
+                  onChangeText={setEmail}
+                  value={email}
+                  placeholder="Username"
+                />
+                <TextInput
+                  style={styles.input}
+                  onChangeText={setPassword}
+                  value={password}
+                  placeholder="Password"
+                  secureTextEntry={true}
+                />
+              </View>
+              <View style={styles.help}>
+                <Text style={[styles.help__link, styles.help__linkFirst]}>
+                  Password Dimenticata?
+                </Text>
+                <Text style={styles.help__link}>Primo Accesso?</Text>
+                <Text style={styles.help__link}>Hai bisogno di Aiuto?</Text>
+              </View>
+              <TouchableOpacity onPress={() => navigate('Conditions')}>
+                <Text style={styles.help__linkBlack}>
+                  Termini e Condizioni &gt;&gt;
+                </Text>
+              </TouchableOpacity>
+              <CustomButton
+                title={'Invia'}
+                onPress={() => console.log('click')}
               />
-              <TextInput
-                style={styles.input}
-                onChangeText={setPassword}
-                value={password}
-                placeholder="Password"
-                secureTextEntry={true}
-              />
             </View>
-            <View style={styles.help}>
-              <Text style={[styles.help__link, styles.help__linkFirst]}>
-                Password Dimenticata?
-              </Text>
-              <Text style={styles.help__link}>Primo Accesso?</Text>
-              <Text style={styles.help__link}>Hai bisogno di Aiuto?</Text>
-            </View>
-            <TouchableOpacity>
-              <Text style={styles.help__linkBlack}>
-                Termini e Condizioni &gt;&gt;
-              </Text>
-            </TouchableOpacity>
-            <CustomButton
-              title={'Invia'}
-              onPress={() => console.log('click')}
-            />
-          </View>
-          <View style={styles.logo__container}>
-            <View style={styles.logo__circle}>
-              <Image source={require('../assets/images/Logo.png')} />
+            <View style={styles.logo__container}>
+              <View style={styles.logo__circle}>
+                <Image source={require('../assets/images/Logo.png')} />
+              </View>
             </View>
           </View>
-        </View>
+        </SafeAreaView>
       </LinearGradient>
     </View>
   );

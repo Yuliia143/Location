@@ -2,6 +2,7 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import SignIn from '../scenes/SignIn';
+import Conditions from '../scenes/Conditions';
 
 const Stack = createStackNavigator();
 
@@ -14,6 +15,7 @@ export const Navigate = () => {
           headerShown: false,
         }}>
         <Stack.Screen name="SignIn" component={SignIn} />
+        <Stack.Screen name="Conditions" component={Conditions} />
 
         {/*{token ? (*/}
         {/*  <>*/}
