@@ -1,13 +1,19 @@
 import React from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, View, TouchableOpacity } from 'react-native';
+import { DrawerActions, useNavigation } from '@react-navigation/native';
 
 const Header: React.FC = () => {
+  const navigation = useNavigation();
   return (
     <View style={styles.header__container}>
-      <Image
-        style={styles.menu__button}
-        source={require('../assets/icons/Menu.png')}
-      />
+      <TouchableOpacity
+        onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
+        <Image
+          style={styles.menu__button}
+          source={require('../assets/icons/Menu.png')}
+        />
+      </TouchableOpacity>
+
       <Image source={require('../assets/icons/Arrow.png')} />
     </View>
   );

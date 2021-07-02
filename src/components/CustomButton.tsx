@@ -2,6 +2,9 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 
 interface CustomButtonProps {
+  color?: string;
+  titleColor?: string;
+  radius: string;
   type: string;
   title: string;
   onPress: () => void;
@@ -9,6 +12,9 @@ interface CustomButtonProps {
 }
 
 const CustomButton: React.FC<CustomButtonProps> = ({
+  color = 'blue',
+  titleColor = 'light',
+  radius,
   type,
   title,
   onPress,
@@ -21,6 +27,10 @@ const CustomButton: React.FC<CustomButtonProps> = ({
       style={[
         styles.button,
         type === 'small' ? styles.button__small : styles.button__big,
+        color === 'blue' ? styles.button__blue : styles.button__gray,
+        radius === 'big'
+          ? styles.button__radiusBig
+          : styles.button__radiusSmall,
         disabled ? styles.button__disabled : styles.button,
       ]}>
       <Text
@@ -29,6 +39,9 @@ const CustomButton: React.FC<CustomButtonProps> = ({
           type === 'small'
             ? styles.button__bigTitle
             : styles.button__smallTitle,
+          titleColor === 'dark'
+            ? styles.button__titleDark
+            : styles.button__titleLight,
         ]}>
         {title}
       </Text>
@@ -52,21 +65,28 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
     shadowRadius: 4.0,
     elevation: 6,
-
+  },
+  button__blue: {
     backgroundColor: '#005BA4',
+  },
+  button__gray: {
+    backgroundColor: '#f2f2f2',
   },
   button__small: {
     width: 119,
     height: 39,
-    borderRadius: 25,
   },
   button__big: {
     width: 188,
     height: 44,
+  },
+  button__radiusBig: {
+    borderRadius: 25,
+  },
+  button__radiusSmall: {
     borderRadius: 15,
   },
   button__title: {
-    color: '#ffffff',
     textTransform: 'uppercase',
     textAlign: 'center',
   },
@@ -75,6 +95,12 @@ const styles = StyleSheet.create({
   },
   button__smallTitle: {
     fontSize: 18,
+  },
+  button__titleDark: {
+    color: '#0F397E',
+  },
+  button__titleLight: {
+    color: '#ffffff',
   },
   button__disabled: {
     backgroundColor: '#B8BDC1',

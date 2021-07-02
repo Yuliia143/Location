@@ -5,7 +5,7 @@ import SignIn from '../scenes/SignIn';
 import Conditions from '../scenes/Conditions';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store';
-import Home from '../scenes/Home';
+import DrawerNavigation from './drawerNavigation';
 
 const Stack = createStackNavigator();
 
@@ -21,8 +21,7 @@ export const Navigate = () => {
         }}>
         {token ? (
           <>
-            <Stack.Screen name="Home" component={Home} />
-            <Stack.Screen name="Conditions" component={Conditions} />
+            <Stack.Screen name="Home" component={DrawerNavigation} />
           </>
         ) : (
           <>

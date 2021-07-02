@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, SafeAreaView, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { useIsFocused } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { loadProjects } from '../store/actions/projects';
 import Selector from '../components/Selector';
 import { RootState } from '../store';
@@ -40,6 +40,7 @@ const Home: React.FC = () => {
           </View>
           <View style={{ marginBottom: 30 }}>
             <CustomButton
+              radius="small"
               type="big"
               title="Consulta"
               onPress={() => console.log('click')}
@@ -47,6 +48,7 @@ const Home: React.FC = () => {
           </View>
           <View>
             <CustomButton
+              radius="small"
               type="big"
               title="invia posizione"
               onPress={() => console.log('click')}

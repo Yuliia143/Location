@@ -10,12 +10,16 @@ import {
   View,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store';
 
 const Conditions: React.FC = () => {
   const navigation = useNavigation();
 
+  const token = useSelector((state: RootState) => state.auth.token);
+
   const navigate = () => {
-    navigation.navigate('SignIn'); //TODO depends on token
+    token ? navigation.navigate('Home') : navigation.navigate('SignIn');
   };
 
   return (

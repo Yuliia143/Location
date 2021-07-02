@@ -8,7 +8,7 @@ import {
   SIGN_OUT_FAIL,
 } from '../reducers/auth/types';
 import { signIn } from '../../api/auth';
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const auth =
   (authOptions: AuthInterface): AppThunk =>

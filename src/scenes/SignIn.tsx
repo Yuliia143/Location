@@ -70,7 +70,12 @@ const SignIn: React.FC = () => {
                   Termini e Condizioni &gt;&gt;
                 </Text>
               </TouchableOpacity>
-              <CustomButton type="small" title={'Invia'} onPress={signIn} />
+              <CustomButton
+                radius="big"
+                type="small"
+                title={'Invia'}
+                onPress={signIn}
+              />
             </View>
             <View style={styles.logo__container}>
               <View style={styles.logo__circle}>
