@@ -12,14 +12,22 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import CustomButton from '../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
+import { auth } from '../store/actions/auth';
 
 const SignIn: React.FC = () => {
   const navigation = useNavigation();
-  const [email, setEmail] = useState('Customer');
+  const dispatch = useDispatch();
+
+  const [userName, setUserName] = useState('Customer');
   const [password, setPassword] = useState('password');
 
   const navigate = (link: string) => {
     navigation.navigate(link);
+  };
+
+  const signIn = () => {
+    dispatch(auth({ userName, password }));
   };
 
   return (
@@ -38,8 +46,8 @@ const SignIn: React.FC = () => {
               <View style={styles.container__inputs}>
                 <TextInput
                   style={styles.input}
-                  onChangeText={setEmail}
-                  value={email}
+                  onChangeText={setUserName}
+                  value={userName}
                   placeholder="Username"
                 />
                 <TextInput
@@ -62,10 +70,7 @@ const SignIn: React.FC = () => {
                   Termini e Condizioni &gt;&gt;
                 </Text>
               </TouchableOpacity>
-              <CustomButton
-                title={'Invia'}
-                onPress={() => console.log('click')}
-              />
+              <CustomButton type="small" title={'Invia'} onPress={signIn} />
             </View>
             <View style={styles.logo__container}>
               <View style={styles.logo__circle}>

@@ -2,12 +2,14 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 
 interface CustomButtonProps {
+  type: string;
   title: string;
   onPress: () => void;
   disabled?: boolean;
 }
 
 const CustomButton: React.FC<CustomButtonProps> = ({
+  type,
   title,
   onPress,
   disabled = false,
@@ -18,9 +20,18 @@ const CustomButton: React.FC<CustomButtonProps> = ({
       disabled={disabled}
       style={[
         styles.button,
+        type === 'small' ? styles.button__small : styles.button__big,
         disabled ? styles.button__disabled : styles.button,
       ]}>
-      <Text style={[styles.button__title]}>{title}</Text>
+      <Text
+        style={[
+          styles.button__title,
+          type === 'small'
+            ? styles.button__bigTitle
+            : styles.button__smallTitle,
+        ]}>
+        {title}
+      </Text>
     </TouchableOpacity>
   );
 };
@@ -42,16 +53,28 @@ const styles = StyleSheet.create({
     shadowRadius: 4.0,
     elevation: 6,
 
-    borderRadius: 25,
+    backgroundColor: '#005BA4',
+  },
+  button__small: {
     width: 119,
     height: 39,
-    backgroundColor: '#005BA4',
+    borderRadius: 25,
+  },
+  button__big: {
+    width: 188,
+    height: 44,
+    borderRadius: 15,
   },
   button__title: {
     color: '#ffffff',
     textTransform: 'uppercase',
     textAlign: 'center',
+  },
+  button__bigTitle: {
     fontSize: 24,
+  },
+  button__smallTitle: {
+    fontSize: 18,
   },
   button__disabled: {
     backgroundColor: '#B8BDC1',
