@@ -6,6 +6,7 @@ import Conditions from '../scenes/Conditions';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store';
 import DrawerNavigation from './drawerNavigation';
+import Locations from '../scenes/Locations';
 
 const Stack = createStackNavigator();
 

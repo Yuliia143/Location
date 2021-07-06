@@ -58,18 +58,6 @@ const SignIn: React.FC = () => {
                   secureTextEntry={true}
                 />
               </View>
-              <View style={styles.help}>
-                <Text style={[styles.help__link, styles.help__linkFirst]}>
-                  Password Dimenticata?
-                </Text>
-                <Text style={styles.help__link}>Primo Accesso?</Text>
-                <Text style={styles.help__link}>Hai bisogno di Aiuto?</Text>
-              </View>
-              <TouchableOpacity onPress={() => navigate('Conditions')}>
-                <Text style={styles.help__linkBlack}>
-                  Termini e Condizioni &gt;&gt;
-                </Text>
-              </TouchableOpacity>
               <CustomButton
                 radius="big"
                 type="small"
@@ -145,6 +133,7 @@ const styles = StyleSheet.create({
   },
   container__inputs: {
     paddingHorizontal: 20,
+    marginBottom: 20,
   },
   input: {
     marginVertical: 10,

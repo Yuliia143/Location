@@ -12,6 +12,7 @@ import CustomButton from '../components/CustomButton';
 
 const Home: React.FC = () => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const isFocused = useIsFocused();
 
   const projects = useSelector((state: RootState) => state.projects.projects);
@@ -22,6 +23,10 @@ const Home: React.FC = () => {
       dispatch(loadProjects());
     }
   }, [isFocused]);
+
+  const navigate = (link: string) => {
+    navigation.navigate(link);
+  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -51,7 +56,7 @@ const Home: React.FC = () => {
               radius="small"
               type="big"
               title="invia posizione"
-              onPress={() => console.log('click')}
+              onPress={() => navigate('Locations')}
             />
           </View>
         </View>
