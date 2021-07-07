@@ -1,5 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { FlatList, StyleSheet, View, Text, Animated } from 'react-native';
+import {
+  FlatList,
+  StyleSheet,
+  View,
+  Text,
+  Animated,
+  SafeAreaView,
+} from 'react-native';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import LocationItem from '../components/LocationItem';
@@ -65,47 +72,53 @@ const Locations: React.FC = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Header />
-      <View style={styles.locations__container}>
-        <Text style={styles.title}>Commessa 7</Text>
-        <View style={{ flex: 1, flexDirection: 'row', paddingHorizontal: 20 }}>
-          <View style={styles.locationsList}>
-            <FlatList
-              onContentSizeChange={onContentSizeChange}
-              onLayout={onLayout}
-              onScroll={Animated.event(
-                [{ nativeEvent: { contentOffset: { y: scrollIndicator } } }],
-                { useNativeDriver: false },
-              )}
-              scrollEventThrottle={16}
-              showsVerticalScrollIndicator={false}
-              data={locations}
-              renderItem={renderItem}
-              keyExtractor={item => item.id.toString()}
-            />
-          </View>
-          <View style={styles.customScrollBarBackground}>
-            <Animated.View
-              style={[
-                styles.customScrollBar,
-                {
-                  height: scrollIndicatorSize,
-                  transform: [{ translateY: scrollIndicatorPosition }],
-                },
-              ]}
-            />
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
+        <Header />
+        <View style={styles.content}>
+          <Text style={styles.title}>Commessa 7</Text>
+          <View
+            style={{ flex: 1, flexDirection: 'row', paddingHorizontal: 20 }}>
+            <View style={styles.locationsList}>
+              <FlatList
+                onContentSizeChange={onContentSizeChange}
+                onLayout={onLayout}
+                onScroll={Animated.event(
+                  [{ nativeEvent: { contentOffset: { y: scrollIndicator } } }],
+                  { useNativeDriver: false },
+                )}
+                scrollEventThrottle={16}
+                showsVerticalScrollIndicator={false}
+                data={locations}
+                renderItem={renderItem}
+                keyExtractor={item => item.id.toString()}
+              />
+            </View>
+            <View style={styles.customScrollBarBackground}>
+              <Animated.View
+                style={[
+                  styles.customScrollBar,
+                  {
+                    height: scrollIndicatorSize,
+                    transform: [{ translateY: scrollIndicatorPosition }],
+                  },
+                ]}
+              />
+            </View>
           </View>
         </View>
+        <Footer />
       </View>
-      <Footer />
-    </View>
+    </SafeAreaView>
   );
 };
 
 export default Locations;
 
 const styles = StyleSheet.create({
+  safeArea: {
+    backgroundColor: 'white',
+  },
   scrollContainer: {
     flexDirection: 'row',
     width: '100%',
@@ -131,7 +144,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginVertical: 20,
   },
-  locations__container: {
+  content: {
     height: '75%',
   },
   locationsList: {

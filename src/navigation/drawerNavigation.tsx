@@ -5,6 +5,7 @@ import Conditions from '../scenes/Conditions';
 import CustomDrawer from '../components/CustomDrawer';
 import { Image } from 'react-native';
 import Locations from '../scenes/Locations';
+import Report from '../scenes/Report';
 
 const Drawer = createDrawerNavigator();
 
@@ -43,6 +44,7 @@ const DrawerNavigation = () => {
         }}
       />
       <Drawer.Screen name="Locations" component={Locations} />
+      <Drawer.Screen name="Report" component={Report} />
     </Drawer.Navigator>
   );
 };

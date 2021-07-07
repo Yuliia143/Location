@@ -48,7 +48,7 @@ const Home: React.FC = () => {
               radius="small"
               type="big"
               title="Consulta"
-              onPress={() => console.log('click')}
+              onPress={() => navigate('Report')}
             />
           </View>
           <View>
