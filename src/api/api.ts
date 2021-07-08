@@ -1,7 +1,7 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
+import { store } from '../store';
 
-export const baseURLAnon = 'http://mockup.soluzionitop.com:8080/an_projects/';
-export const baseURL = 'http://mockup.soluzionitop.com:8080/projects/';
+export const baseURL = 'https://sogema.soluzionitop.com/api/index.php/';
 
 export const api = axios.create({
   headers: {
@@ -10,11 +10,12 @@ export const api = axios.create({
   },
 });
 
-// api.interceptors.request.use((config: AxiosRequestConfig) => {
-//   if (store.getState().auth.token)
-//     config.headers.Authorization = `Bearer 8|lC2DkXgfzA`;
-//   return config;
-// });
+api.interceptors.request.use((config: AxiosRequestConfig) => {
+  if (store.getState().auth.token) {
+    config.headers.DOLAPIKEY = `${store.getState().auth.token}`;
+  }
+  return config;
+});
 
 // api.interceptors.response.use(
 //   (response: any) => {

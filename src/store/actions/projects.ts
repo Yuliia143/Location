@@ -4,26 +4,21 @@ import {
   PROJECTS_SUCCESS,
   PROJECTS_FAIL,
 } from '../reducers/projects/types';
+import { getProjects } from '../../api/projects';
 
 export const loadProjects = (): AppThunk => async dispatch => {
   dispatch({ type: PROJECTS_LOADING });
   try {
-    return dispatch({
-      type: PROJECTS_SUCCESS,
-      payload: [
-        { id: '1', name: 'Project1' },
-        { id: '2', name: 'Project2' },
-        { id: '3', name: 'Project3' },
-        { id: '4', name: 'Project4' },
-        { id: '5', name: 'Project5' },
-      ],
+    await getProjects().then(response => {
+      const projects = response.data.map((project: any) => ({
+        id: project.id,
+        name: project.ref,
+      }));
+      return dispatch({
+        type: PROJECTS_SUCCESS,
+        payload: projects,
+      });
     });
-    // await getProjects().then(response => {
-    //   return dispatch({
-    //     type: PROJECTS_SUCCESS,
-    //     payload: response.data.projects,
-    //   });
-    // });
   } catch (err) {
     return dispatch({ type: PROJECTS_FAIL });
   }

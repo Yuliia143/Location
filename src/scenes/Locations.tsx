@@ -14,6 +14,7 @@ import { loadLocations } from '../store/actions/locations';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store';
 import { useIsFocused } from '@react-navigation/native';
+import { LocationInterface } from '../interfaces/location.interface';
 
 const Locations: React.FC = () => {
   const dispatch = useDispatch();
@@ -91,7 +92,9 @@ const Locations: React.FC = () => {
                 showsVerticalScrollIndicator={false}
                 data={locations}
                 renderItem={renderItem}
-                keyExtractor={item => item.id.toString()}
+                keyExtractor={(item: LocationInterface, index) =>
+                  index.toString()
+                }
               />
             </View>
             <View style={styles.customScrollBarBackground}>

@@ -5,29 +5,22 @@ import {
   View,
   Text,
   Image,
-  TouchableOpacity,
   TextInput,
   Dimensions,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import CustomButton from '../components/CustomButton';
-import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import { auth } from '../store/actions/auth';
 
 const SignIn: React.FC = () => {
-  const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const [userName, setUserName] = useState('Customer');
-  const [password, setPassword] = useState('password');
-
-  const navigate = (link: string) => {
-    navigation.navigate(link);
-  };
+  const [userName, setUserName] = useState('sogema');
+  const [password, setPassword] = useState('Venusia17!');
 
   const signIn = () => {
-    dispatch(auth({ userName, password }));
+    dispatch(auth({ login: userName, password, entity: '', reset: 0 }));
   };
 
   return (

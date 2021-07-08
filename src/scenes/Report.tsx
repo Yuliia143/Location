@@ -108,19 +108,21 @@ const Report: React.FC = () => {
               <MapView
                 style={styles.map}
                 provider={PROVIDER_GOOGLE}
-                initialRegion={{
-                  latitude: parseFloat(String(currentLatitude)),
-                  longitude: parseFloat(String(currentLongitude)),
-                  latitudeDelta: latDelta,
-                  longitudeDelta: lonDelta,
-                }}>
-                <Marker
-                  key={1}
-                  coordinate={{
-                    latitude: parseFloat(String(currentLatitude)),
-                    longitude: parseFloat(String(currentLongitude)),
-                  }}
-                />
+                showsUserLocation={true}
+                // initialRegion={{
+                //   latitude: parseFloat(String(currentLatitude)),
+                //   longitude: parseFloat(String(currentLongitude)),
+                //   latitudeDelta: latDelta,
+                //   longitudeDelta: lonDelta,
+                // }}
+              >
+                {/*<Marker*/}
+                {/*  key={1}*/}
+                {/*  coordinate={{*/}
+                {/*    latitude: parseFloat(String(currentLatitude)),*/}
+                {/*    longitude: parseFloat(String(currentLongitude)),*/}
+                {/*  }}*/}
+                {/*/>*/}
               </MapView>
             </View>
             <View style={styles.map__button}>

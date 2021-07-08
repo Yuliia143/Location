@@ -1,4 +1,6 @@
 export interface AuthInterface {
-  userName: string;
+  login: string;
   password: string;
+  entity: string;
+  reset: number;
 }

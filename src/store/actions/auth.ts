@@ -15,21 +15,17 @@ export const auth =
   async dispatch => {
     dispatch({ type: AUTH_LOADING });
     try {
-      return dispatch({
-        type: SIGN_IN_SUCCESS,
-        payload: { token: 'Token', userName: 'User1' },
+      await signIn(authOptions).then(async response => {
+        console.log(response);
+        await AsyncStorage.setItem(
+          'token',
+          JSON.stringify(response.data.success.token),
+        );
+        return dispatch({
+          type: SIGN_IN_SUCCESS,
+          payload: { ...response.data.success, userName: authOptions.login },
+        });
       });
-
-      // await signIn(authOptions).then(async response => {
-      //   await AsyncStorage.setItem(
-      //     'token',
-      //     JSON.stringify(response.data.data.jwt),
-      //   );
-      //   return dispatch({
-      //     type: SIGN_IN_SUCCESS,
-      //     payload: response.data.data,
-      //   });
-      // });
     } catch (err) {
       console.log(err.response.data.message);
       return dispatch({ type: SIGN_IN_FAIL });

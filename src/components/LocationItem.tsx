@@ -42,7 +42,7 @@ const LocationItem: React.FC<LocationItemProps> = ({ item }) => {
         </View>
       </View>
       <Text style={[styles.item__description, styles.item__border]}>
-        {item.desc}
+        {item.description}
       </Text>
     </View>
   );

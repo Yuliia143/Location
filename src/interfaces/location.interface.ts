@@ -1,7 +1,6 @@
 export interface LocationInterface {
-  id: number;
   date: Date;
-  desc: string;
+  description: string;
   array_options: CoordinatesInterface;
 }
 
