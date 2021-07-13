@@ -20,10 +20,10 @@ const LocationItem: React.FC<LocationItemProps> = ({ item }) => {
           <View style={styles.item__left}>
             <View style={styles.item__dateInfo}>
               <Text style={styles.item__date}>
-                {moment(item.date).format('DD/MM/YYYY')}
+                {moment.unix(+item.date).format('DD/MM/YYYY')}
               </Text>
               <Text style={[styles.item__date, styles.item__time]}>
-                {moment(item.date).format('HH:mm:ss')}
+                {moment.unix(+item.date).format('HH:mm:ss')}
               </Text>
             </View>
           </View>

@@ -93,8 +93,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    flex: 1.2,
     padding: 20,
+    flex: 1.2,
   },
   logo__circle: {
     justifyContent: 'center',

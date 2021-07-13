@@ -1,4 +1,4 @@
-import { LocationInterface } from '../../../interfaces/location.interface';
+import { LocationsInterface } from '../../../interfaces/location.interface';
 
 export const LOCATIONS_LOADING = 'LOCATIONS_LOADING';
 export const LOCATIONS_SUCCESS = 'LOCATIONS_SUCCESS';
@@ -9,7 +9,7 @@ interface LocationsLoadingAction {
 }
 interface LocationsSuccessAction {
   type: typeof LOCATIONS_SUCCESS;
-  payload: LocationInterface[];
+  payload: {};
 }
 interface LocationsFailAction {
   type: typeof LOCATIONS_FAIL;
@@ -22,5 +22,5 @@ export type LocationsAction =
 
 export interface LocationsState {
   loading: boolean;
-  locations: LocationInterface[];
+  locations: LocationsInterface;
 }

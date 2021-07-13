@@ -1,93 +1,164 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
+  Alert,
+  Linking,
+  PermissionsAndroid,
+  Platform,
   SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
+  ToastAndroid,
   View,
-  PermissionsAndroid,
-  Platform,
 } from 'react-native';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import CustomButton from '../components/CustomButton';
-import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
-import { useIsFocused } from '@react-navigation/native';
+import { useIsFocused, useRoute } from '@react-navigation/native';
+import moment from 'moment';
+import { useDispatch } from 'react-redux';
+import { setReport } from '../store/actions/report';
+
+interface Location {
+  latitude: number;
+  longitude: number;
+}
 
 const Report: React.FC = () => {
+  const dispatch = useDispatch();
   const isFocused = useIsFocused();
+  const route: any = useRoute();
 
   const [description, setDescription] = useState('');
 
-  const [currentLongitude, setCurrentLongitude] = useState(0);
-  const [currentLatitude, setCurrentLatitude] = useState(0);
-  const [latDelta, setLatDelta] = useState(0);
-  const [lonDelta, setLonDelta] = useState(0);
+  const [location, setLocation] = useState({
+    latitude: 0,
+    longitude: 0,
+  } as Location);
 
-  const oneDegreeOfLongitudeInMeters = 111.32 * 1000;
-  const circumference = (40075 / 360) * 1000;
+  const mapRef = useRef({} as MapView);
 
-  const [locationStatus, setLocationStatus] = useState('');
-
-  useEffect(() => {
-    requestPermissions();
-  }, []);
-
-  async function requestPermissions() {
-    if (Platform.OS === 'ios') {
-      const auth = await Geolocation.requestAuthorization('whenInUse');
-      if (auth === 'granted') {
-        getOneTimeLocation();
-      }
+  const hasPermissionIOS = async () => {
+    const openSetting = () => {
+      Linking.openSettings().catch(() => {
+        Alert.alert('Unable to open settings');
+      });
+    };
+    const status = await Geolocation.requestAuthorization('whenInUse');
+    if (status === 'granted') {
+      return true;
     }
-
-    if (Platform.OS === 'android') {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+    if (status === 'denied') {
+      Alert.alert('Location permission denied');
+    }
+    if (status === 'disabled') {
+      Alert.alert(
+        `Turn on Location Services to allow to determine your location.`,
+        '',
+        [
+          { text: 'Go to Settings', onPress: openSetting },
+          { text: "Don't Use Location", onPress: () => {} },
+        ],
       );
-      if (granted) {
-        getOneTimeLocation();
-      } else {
-        console.log('error');
-      }
     }
-  }
+    return false;
+  };
 
-  const getOneTimeLocation = () => {
-    setLocationStatus('Getting Location ...');
+  const hasLocationPermission = async () => {
+    if (Platform.OS === 'ios') {
+      return await hasPermissionIOS();
+    }
+
+    if (Platform.OS === 'android' && Platform.Version < 23) {
+      return true;
+    }
+    const hasPermission = await PermissionsAndroid.check(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+    );
+    if (hasPermission) {
+      return true;
+    }
+    const status = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+    );
+    if (status === PermissionsAndroid.RESULTS.GRANTED) {
+      return true;
+    }
+    if (status === PermissionsAndroid.RESULTS.DENIED) {
+      ToastAndroid.show(
+        'Location permission denied by user.',
+        ToastAndroid.LONG,
+      );
+    } else if (status === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
+      ToastAndroid.show(
+        'Location permission revoked by user.',
+        ToastAndroid.LONG,
+      );
+    }
+    return false;
+  };
+
+  const getLocation = async () => {
+    const hasPermission = await hasLocationPermission();
+
+    if (!hasPermission) {
+      return;
+    }
+
     Geolocation.getCurrentPosition(
-      //Will give you the current location
       position => {
-        console.log(position, 'Position');
-        setLocationStatus('You are Here');
-
-        //Setting Longitude state
-        setCurrentLongitude(position.coords.longitude);
-
-        //Setting Longitude state
-        setCurrentLatitude(position.coords.latitude);
-        setLatDelta(
-          position.coords.accuracy *
-            (1 / (Math.cos(currentLatitude) * circumference)),
-        );
-        setLonDelta(position.coords.accuracy / oneDegreeOfLongitudeInMeters);
+        const { latitude, longitude } = position.coords;
+        setLocation({ latitude: latitude, longitude: longitude });
+        mapRef.current.animateToRegion({
+          latitude,
+          longitude,
+          latitudeDelta: 0,
+          longitudeDelta: 0,
+        });
+        console.log(position);
       },
       error => {
-        console.log(error.message);
-        setLocationStatus(error.message);
+        Alert.alert(`Code ${error.code}`, error.message);
+        setLocation({ latitude: 0, longitude: 0 });
+        console.log(error);
       },
       {
-        enableHighAccuracy: false,
+        accuracy: {
+          android: 'high',
+          ios: 'best',
+        },
+        enableHighAccuracy: true,
         timeout: 15000,
         maximumAge: 10000,
+        distanceFilter: 0,
+        forceRequestLocation: true,
+        showLocationDialog: true,
       },
     );
   };
 
-  console.log(currentLatitude, currentLongitude);
+  const report = () => {
+    dispatch(
+      setReport(route.params.projectId, {
+        description,
+        date: moment().unix(),
+        duree: 3600,
+        array_options: {
+          options_latitudine: location.latitude,
+          options_longitudine: location.longitude,
+        },
+      }),
+    );
+  };
 
-  // @ts-ignore
+  useEffect(() => {
+    if (isFocused) {
+      getLocation();
+    }
+  }, [isFocused]);
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
@@ -106,23 +177,24 @@ const Report: React.FC = () => {
           <View style={styles.map__container}>
             <View style={styles.map__content}>
               <MapView
+                ref={mapRef}
                 style={styles.map}
                 provider={PROVIDER_GOOGLE}
-                showsUserLocation={true}
-                // initialRegion={{
-                //   latitude: parseFloat(String(currentLatitude)),
-                //   longitude: parseFloat(String(currentLongitude)),
-                //   latitudeDelta: latDelta,
-                //   longitudeDelta: lonDelta,
-                // }}
-              >
-                {/*<Marker*/}
-                {/*  key={1}*/}
-                {/*  coordinate={{*/}
-                {/*    latitude: parseFloat(String(currentLatitude)),*/}
-                {/*    longitude: parseFloat(String(currentLongitude)),*/}
-                {/*  }}*/}
-                {/*/>*/}
+                minZoomLevel={0}
+                maxZoomLevel={15}
+                initialRegion={{
+                  latitude: location.latitude,
+                  longitude: location.longitude,
+                  latitudeDelta: 0,
+                  longitudeDelta: 0,
+                }}>
+                <Marker
+                  key={1}
+                  coordinate={{
+                    latitude: location.latitude,
+                    longitude: location.longitude,
+                  }}
+                />
               </MapView>
             </View>
             <View style={styles.map__button}>
@@ -130,7 +202,8 @@ const Report: React.FC = () => {
                 radius="big"
                 type="big"
                 title="Invia posizione"
-                onPress={() => console.log('Click')}
+                disabled={!description}
+                onPress={report}
               />
             </View>
           </View>

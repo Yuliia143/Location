@@ -2,10 +2,10 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import SignIn from '../scenes/SignIn';
-import Conditions from '../scenes/Conditions';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store';
-import DrawerNavigation from './drawerNavigation';
+import Home from '../scenes/Home';
+import Report from '../scenes/Report';
 import Locations from '../scenes/Locations';
 
 const Stack = createStackNavigator();
@@ -22,12 +22,13 @@ export const Navigate = () => {
         }}>
         {token ? (
           <>
-            <Stack.Screen name="Home" component={DrawerNavigation} />
+            <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen name="Report" component={Report} />
+            <Stack.Screen name="Locations" component={Locations} />
           </>
         ) : (
           <>
             <Stack.Screen name="SignIn" component={SignIn} />
-            <Stack.Screen name="Conditions" component={Conditions} />
           </>
         )}
       </Stack.Navigator>

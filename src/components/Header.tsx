@@ -1,20 +1,32 @@
 import React from 'react';
 import { Image, StyleSheet, View, TouchableOpacity } from 'react-native';
-import { DrawerActions, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
+import { signOut } from '../store/actions/auth';
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  backButton?: boolean;
+}
+
+const Header: React.FC<HeaderProps> = ({ backButton = true }) => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  const logout = () => {
+    dispatch(signOut());
+  };
+
   return (
     <View style={styles.header__container}>
-      <TouchableOpacity
-        onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
-        <Image
-          style={styles.menu__button}
-          source={require('../assets/icons/Menu.png')}
-        />
-      </TouchableOpacity>
-
-      <Image source={require('../assets/icons/Arrow.png')} />
+      {backButton ? (
+        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+          <Image source={require('../assets/icons/Arrow.png')} />
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity onPress={logout} style={styles.header__logout}>
+          <Image source={require('../assets/icons/Logout.png')} />
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
@@ -24,13 +36,13 @@ export default Header;
 const styles = StyleSheet.create({
   header__container: {
     width: '100%',
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
     paddingVertical: 10,
     paddingHorizontal: 15,
   },
-  menu__button: {
-    marginRight: 10,
+  header__logout: {
+    alignSelf: 'flex-end',
+    overflow: 'hidden',
+    width: 30,
+    height: 30,
   },
 });

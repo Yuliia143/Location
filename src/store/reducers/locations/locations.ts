@@ -5,9 +5,10 @@ import {
   LocationsAction,
   LocationsState,
 } from './types';
+import { LocationsInterface } from '../../../interfaces/location.interface';
 
 const initialState: LocationsState = {
-  locations: [],
+  locations: {} as LocationsInterface,
   loading: false,
 };
 

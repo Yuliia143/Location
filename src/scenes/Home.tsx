@@ -25,13 +25,15 @@ const Home: React.FC = () => {
   }, [isFocused]);
 
   const navigate = (link: string) => {
-    navigation.navigate(link);
+    navigation.navigate(link, { projectId: selectedValue.id });
   };
+
+  console.log(selectedValue);
 
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
-        <Header />
+        <Header backButton={false} />
         <View style={styles.content}>
           <View style={styles.select__container}>
             <Text style={styles.select__title}>Seleziona Commessa</Text>
@@ -48,6 +50,7 @@ const Home: React.FC = () => {
               radius="small"
               type="big"
               title="Consulta"
+              disabled={!Object.keys(selectedValue).length}
               onPress={() => navigate('Report')}
             />
           </View>
@@ -56,6 +59,7 @@ const Home: React.FC = () => {
               radius="small"
               type="big"
               title="invia posizione"
+              disabled={!Object.keys(selectedValue).length}
               onPress={() => navigate('Locations')}
             />
           </View>

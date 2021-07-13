@@ -13,16 +13,19 @@ import LocationItem from '../components/LocationItem';
 import { loadLocations } from '../store/actions/locations';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store';
-import { useIsFocused } from '@react-navigation/native';
+import { useIsFocused, useRoute } from '@react-navigation/native';
 import { LocationInterface } from '../interfaces/location.interface';
 
 const Locations: React.FC = () => {
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
+  const route: any = useRoute();
 
   const locations = useSelector(
-    (state: RootState) => state.locations.locations,
+    (state: RootState) => state.locations.locations[route.params.projectId],
   );
+
+  console.log(locations);
 
   const renderItem = ({ item }: { item: any }) => {
     return <LocationItem item={item} />;
