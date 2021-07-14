@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, SafeAreaView, StyleSheet } from 'react-native';
+import { View, Text, SafeAreaView, StyleSheet, Dimensions } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { loadProjects } from '../store/actions/projects';
@@ -25,10 +25,8 @@ const Home: React.FC = () => {
   }, [isFocused]);
 
   const navigate = (link: string) => {
-    navigation.navigate(link, { projectId: selectedValue.id });
+    navigation.navigate(link, { project: selectedValue });
   };
-
-  console.log(selectedValue);
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -51,7 +49,7 @@ const Home: React.FC = () => {
               type="big"
               title="Consulta"
               disabled={!Object.keys(selectedValue).length}
-              onPress={() => navigate('Report')}
+              onPress={() => navigate('Locations')}
             />
           </View>
           <View>
@@ -60,7 +58,7 @@ const Home: React.FC = () => {
               type="big"
               title="invia posizione"
               disabled={!Object.keys(selectedValue).length}
-              onPress={() => navigate('Locations')}
+              onPress={() => navigate('Report')}
             />
           </View>
         </View>
@@ -71,6 +69,9 @@ const Home: React.FC = () => {
 };
 
 export default Home;
+
+const windowHeight = Dimensions.get('window').height;
+const contentHeight = windowHeight - 170;
 
 const styles = StyleSheet.create({
   safeArea: {
@@ -83,6 +84,7 @@ const styles = StyleSheet.create({
   },
   content: {
     width: '100%',
+    height: contentHeight,
     paddingTop: 40,
   },
   select__container: {

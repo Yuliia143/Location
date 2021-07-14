@@ -9,6 +9,7 @@ import {
 } from '../reducers/auth/types';
 import { signIn } from '../../api/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ADD_NOTIFICATION } from '../reducers/notifications/types';
 
 export const auth =
   (authOptions: AuthInterface): AppThunk =>
@@ -16,7 +17,6 @@ export const auth =
     dispatch({ type: AUTH_LOADING });
     try {
       await signIn(authOptions).then(async response => {
-        console.log(response);
         await AsyncStorage.setItem(
           'token',
           JSON.stringify(response.data.success.token),
@@ -27,7 +27,10 @@ export const auth =
         });
       });
     } catch (err) {
-      console.log(err.response.data.message);
+      dispatch({
+        type: ADD_NOTIFICATION,
+        payload: 'La password da te inserita è errata.\n' + 'Riprova',
+      });
       return dispatch({ type: SIGN_IN_FAIL });
     }
   };

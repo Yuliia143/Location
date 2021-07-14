@@ -6,6 +6,7 @@ import {
   Text,
   Animated,
   SafeAreaView,
+  Dimensions,
 } from 'react-native';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -22,10 +23,9 @@ const Locations: React.FC = () => {
   const route: any = useRoute();
 
   const locations = useSelector(
-    (state: RootState) => state.locations.locations[route.params.projectId],
+    (state: RootState) => state.locations.locations[route.params.project.id],
   );
-
-  console.log(locations);
+  const [projectName] = useState(route.params.project.name);
 
   const renderItem = ({ item }: { item: any }) => {
     return <LocationItem item={item} />;
@@ -80,7 +80,7 @@ const Locations: React.FC = () => {
       <View style={styles.container}>
         <Header />
         <View style={styles.content}>
-          <Text style={styles.title}>Commessa 7</Text>
+          <Text style={styles.title}>{projectName}</Text>
           <View
             style={{ flex: 1, flexDirection: 'row', paddingHorizontal: 20 }}>
             <View style={styles.locationsList}>
@@ -121,6 +121,9 @@ const Locations: React.FC = () => {
 
 export default Locations;
 
+const windowHeight = Dimensions.get('window').height;
+const contentHeight = windowHeight - 170;
+
 const styles = StyleSheet.create({
   safeArea: {
     backgroundColor: 'white',
@@ -151,7 +154,8 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   content: {
-    height: '75%',
+    height: contentHeight - 30,
+    marginBottom: 30,
   },
   locationsList: {
     width: '100%',

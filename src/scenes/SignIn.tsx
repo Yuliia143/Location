@@ -12,6 +12,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import CustomButton from '../components/CustomButton';
 import { useDispatch } from 'react-redux';
 import { auth } from '../store/actions/auth';
+import PopUp from '../components/PopUp';
 
 const SignIn: React.FC = () => {
   const dispatch = useDispatch();
@@ -64,6 +65,7 @@ const SignIn: React.FC = () => {
               </View>
             </View>
           </View>
+          <PopUp />
         </SafeAreaView>
       </LinearGradient>
     </View>
@@ -81,6 +83,8 @@ const circleHeight =
   windowWidth < windowHeight - 480 ? windowWidth : windowHeight - 480;
 const circleRadius = +circleWidth / 2;
 
+const logoHeight = windowHeight - 330;
+
 const styles = StyleSheet.create({
   safeArea: {
     backgroundColor: '#ffffff',
@@ -94,7 +98,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-    flex: 1.2,
+
+    height: logoHeight,
   },
   logo__circle: {
     justifyContent: 'center',

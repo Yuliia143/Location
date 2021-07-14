@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import {
   Alert,
+  Dimensions,
   Linking,
   PermissionsAndroid,
   Platform,
@@ -16,10 +17,16 @@ import Footer from '../components/Footer';
 import CustomButton from '../components/CustomButton';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
-import { useIsFocused, useRoute } from '@react-navigation/native';
+import {
+  useIsFocused,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
 import moment from 'moment';
-import { useDispatch } from 'react-redux';
-import { setReport } from '../store/actions/report';
+import { useDispatch, useSelector } from 'react-redux';
+import { sendReport } from '../store/actions/report';
+import { RootState } from '../store';
+import { SET_CREATED } from '../store/reducers/report/types';
 
 interface Location {
   latitude: number;
@@ -29,9 +36,13 @@ interface Location {
 const Report: React.FC = () => {
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
+  const navigator = useNavigation();
   const route: any = useRoute();
 
+  const isCreated = useSelector((state: RootState) => state.report.isCreated);
+
   const [description, setDescription] = useState('');
+  const [projectName] = useState(route.params.project.name);
 
   const [location, setLocation] = useState({
     latitude: 0,
@@ -130,7 +141,7 @@ const Report: React.FC = () => {
           ios: 'best',
         },
         enableHighAccuracy: true,
-        timeout: 15000,
+        timeout: 30000,
         maximumAge: 10000,
         distanceFilter: 0,
         forceRequestLocation: true,
@@ -141,7 +152,7 @@ const Report: React.FC = () => {
 
   const report = () => {
     dispatch(
-      setReport(route.params.projectId, {
+      sendReport(route.params.project.id, {
         description,
         date: moment().unix(),
         duree: 3600,
@@ -159,12 +170,19 @@ const Report: React.FC = () => {
     }
   }, [isFocused]);
 
+  useEffect(() => {
+    if (isCreated) {
+      dispatch({ type: SET_CREATED, payload: false });
+      navigator.navigate('Locations', { project: route.params.project });
+    }
+  }, [isCreated]);
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
         <Header />
         <View style={styles.content}>
-          <Text style={styles.title}>Commessa 7</Text>
+          <Text style={styles.title}>{projectName}</Text>
           <View style={styles.input__container}>
             <Text style={styles.input__label}>Descrizione</Text>
             <TextInput
@@ -216,6 +234,9 @@ const Report: React.FC = () => {
 
 export default Report;
 
+const windowHeight = Dimensions.get('window').height;
+const contentHeight = windowHeight - 170;
+
 const styles = StyleSheet.create({
   safeArea: {
     backgroundColor: 'white',
@@ -223,12 +244,15 @@ const styles = StyleSheet.create({
   container: {
     display: 'flex',
     flexDirection: 'column',
-    minHeight: '100%',
+    justifyContent: 'space-between',
+    height: '100%',
   },
   content: {
     width: '100%',
     paddingHorizontal: 20,
     alignItems: 'center',
+
+    height: contentHeight,
   },
   title: {
     color: '#005BA4',

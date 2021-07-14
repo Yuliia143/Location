@@ -12,7 +12,6 @@ const Stack = createStackNavigator();
 
 export const Navigate = () => {
   const token = useSelector((state: RootState) => state.auth.token);
-  console.log(token);
 
   return (
     <NavigationContainer>
