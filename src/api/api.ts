@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { store } from '../store';
+import { SIGN_OUT_SUCCESS } from '../store/reducers/auth/types';
 
 export const baseURL = 'https://sogema.soluzionitop.com/api/index.php/';
 
@@ -17,14 +18,14 @@ api.interceptors.request.use((config: AxiosRequestConfig) => {
   return config;
 });
 
-// api.interceptors.response.use(
-//   (response: any) => {
-//     return response;
-//   },
-//   error => {
-//     if (error.response.status === 401) {
-//       store.dispatch({ type: SIGN_OUT_SUCCESS });
-//     }
-//     return Promise.reject();
-//   },
-// );
+api.interceptors.response.use(
+  (response: any) => {
+    return response;
+  },
+  error => {
+    if (error.response.status === 401) {
+      store.dispatch({ type: SIGN_OUT_SUCCESS });
+    }
+    return Promise.reject();
+  },
+);
