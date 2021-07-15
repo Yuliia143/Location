@@ -4,8 +4,6 @@ import {
   Text,
   SafeAreaView,
   StyleSheet,
-  Dimensions,
-  ScrollView,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
@@ -16,11 +14,13 @@ import { ProjectInterface } from '../interfaces/project.interface';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import CustomButton from '../components/CustomButton';
+import { useCalculateSafeArea } from '../hooks/useCalculateSafeArea';
 
 const Home: React.FC = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const isFocused = useIsFocused();
+  const contentHeight = useCalculateSafeArea();
 
   const projects = useSelector((state: RootState) => state.projects.projects);
   const [selectedValue, setSelectedValue] = useState({} as ProjectInterface);
@@ -39,7 +39,7 @@ const Home: React.FC = () => {
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
         <Header backButton={false} />
-        <View style={styles.content}>
+        <View style={[styles.content, {height: contentHeight}]}>
           <View style={styles.select__container}>
             <Text style={styles.select__title}>Seleziona Commessa</Text>
             <View style={styles.select}>
@@ -77,9 +77,6 @@ const Home: React.FC = () => {
 
 export default Home;
 
-const windowHeight = Dimensions.get('window').height;
-const contentHeight = windowHeight - 170;
-
 const styles = StyleSheet.create({
   safeArea: {
     backgroundColor: 'white',
@@ -91,7 +88,6 @@ const styles = StyleSheet.create({
   },
   content: {
     width: '100%',
-    height: contentHeight,
     paddingVertical: 40,
   },
   select__container: {

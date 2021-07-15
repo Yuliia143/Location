@@ -16,11 +16,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store';
 import { useIsFocused, useRoute } from '@react-navigation/native';
 import { LocationInterface } from '../interfaces/location.interface';
+import { useCalculateSafeArea } from '../hooks/useCalculateSafeArea';
 
 const Locations: React.FC = () => {
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
   const route: any = useRoute();
+  const contentHeight = useCalculateSafeArea();
 
   const locations = useSelector(
     (state: RootState) => state.locations.locations[route.params.project.id],
@@ -79,7 +81,7 @@ const Locations: React.FC = () => {
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
         <Header />
-        <View style={styles.content}>
+        <View style={[styles.content, {height: contentHeight}]}>
           <Text style={styles.title}>{projectName}</Text>
           <View
             style={{ flex: 1, flexDirection: 'row', paddingHorizontal: 20 }}>
@@ -121,9 +123,6 @@ const Locations: React.FC = () => {
 
 export default Locations;
 
-const windowHeight = Dimensions.get('window').height;
-const contentHeight = windowHeight - 190;
-
 const styles = StyleSheet.create({
   safeArea: {
     backgroundColor: 'white',
@@ -154,7 +153,6 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   content: {
-    height: +contentHeight,
     marginBottom: 20,
   },
   locationsList: {

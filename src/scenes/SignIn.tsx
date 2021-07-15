@@ -28,7 +28,6 @@ const SignIn: React.FC = () => {
     <View>
       <SafeAreaView style={styles.safeArea} />
       <LinearGradient colors={['#0F397E', '#0066B2']}>
-        <SafeAreaView>
           <View style={styles.container}>
             <View style={styles.form__container}>
               <View style={styles.form__label}>
@@ -66,7 +65,6 @@ const SignIn: React.FC = () => {
             </View>
           </View>
           <PopUp />
-        </SafeAreaView>
       </LinearGradient>
     </View>
   );
@@ -75,13 +73,6 @@ const SignIn: React.FC = () => {
 export default SignIn;
 
 const windowHeight = Dimensions.get('window').height;
-const windowWidth = Dimensions.get('window').width;
-
-const circleWidth =
-  windowWidth < windowHeight - 480 ? '50%' : windowHeight - 480;
-const circleHeight =
-  windowWidth < windowHeight - 480 ? windowWidth : windowHeight - 480;
-const circleRadius = +circleWidth / 2;
 
 const logoHeight = windowHeight - 330;
 
@@ -104,9 +95,9 @@ const styles = StyleSheet.create({
   logo__circle: {
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: +circleRadius,
-    width: circleWidth,
-    height: circleHeight,
+    borderRadius: 150,
+    width: 300,
+    height: 300,
     backgroundColor: '#ffffff',
   },
   form__container: {

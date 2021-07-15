@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import {
   Alert,
-  Dimensions,
   Linking,
   PermissionsAndroid,
   Platform,
@@ -28,6 +27,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { sendReport } from '../store/actions/report';
 import { RootState } from '../store';
 import { SET_CREATED } from '../store/reducers/report/types';
+import { useCalculateSafeArea } from '../hooks/useCalculateSafeArea';
 
 interface Location {
   latitude: number;
@@ -39,6 +39,7 @@ const Report: React.FC = () => {
   const isFocused = useIsFocused();
   const navigator = useNavigation();
   const route: any = useRoute();
+  const contentHeight = useCalculateSafeArea();
 
   const isCreated = useSelector((state: RootState) => state.report.isCreated);
 
@@ -182,7 +183,7 @@ const Report: React.FC = () => {
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
         <Header />
-        <View style={styles.content}>
+        <View style={[styles.content, {height: contentHeight}]}>
           <Text style={styles.title}>{projectName}</Text>
           <View style={styles.input__container}>
             <Text style={styles.input__label}>Descrizione</Text>
@@ -235,9 +236,6 @@ const Report: React.FC = () => {
 
 export default Report;
 
-const windowHeight = Dimensions.get('window').height;
-const contentHeight = windowHeight - 170;
-
 const styles = StyleSheet.create({
   safeArea: {
     backgroundColor: 'white',
@@ -249,7 +247,6 @@ const styles = StyleSheet.create({
   },
   content: {
     width: '100%',
-    height: contentHeight,
     paddingHorizontal: 20,
     paddingBottom: 40,
     alignItems: 'center',
