@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, SafeAreaView, StyleSheet, Dimensions } from 'react-native';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  StyleSheet,
+  Dimensions,
+  ScrollView,
+} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { loadProjects } from '../store/actions/projects';
@@ -80,12 +87,12 @@ const styles = StyleSheet.create({
   container: {
     display: 'flex',
     flexDirection: 'column',
-    minHeight: '100%',
+    height: '100%',
   },
   content: {
     width: '100%',
     height: contentHeight,
-    paddingTop: 40,
+    paddingVertical: 40,
   },
   select__container: {
     alignSelf: 'center',

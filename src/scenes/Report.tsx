@@ -6,6 +6,7 @@ import {
   PermissionsAndroid,
   Platform,
   SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -244,15 +245,14 @@ const styles = StyleSheet.create({
   container: {
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'space-between',
     height: '100%',
   },
   content: {
     width: '100%',
-    paddingHorizontal: 20,
-    alignItems: 'center',
-
     height: contentHeight,
+    paddingHorizontal: 20,
+    paddingBottom: 40,
+    alignItems: 'center',
   },
   title: {
     color: '#005BA4',

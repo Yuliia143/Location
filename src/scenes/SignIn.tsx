@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
   logo__circle: {
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: circleRadius,
+    borderRadius: +circleRadius,
     width: circleWidth,
     height: circleHeight,
     backgroundColor: '#ffffff',

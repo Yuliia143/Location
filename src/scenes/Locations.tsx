@@ -64,7 +64,7 @@ const Locations: React.FC = () => {
   const onContentSizeChange = (
     _: any,
     contentHeight: React.SetStateAction<number>,
-  ) => setCompleteScrollBarHeight(contentHeight);
+  ) => setCompleteScrollBarHeight(contentHeight || 1);
 
   const onLayout = ({
     nativeEvent: {
@@ -122,7 +122,7 @@ const Locations: React.FC = () => {
 export default Locations;
 
 const windowHeight = Dimensions.get('window').height;
-const contentHeight = windowHeight - 170;
+const contentHeight = windowHeight - 190;
 
 const styles = StyleSheet.create({
   safeArea: {
@@ -154,8 +154,8 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   content: {
-    height: contentHeight - 30,
-    marginBottom: 30,
+    height: +contentHeight,
+    marginBottom: 20,
   },
   locationsList: {
     width: '100%',
